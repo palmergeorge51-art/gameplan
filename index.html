@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The $1K/Day Game Plan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#12172B;
+    --ink-2:#1B2140;
+    --gold:#E8A93B;
+    --gold-dim:#c8932f;
+    --paper:#F3EFE6;
+    --paper-dim:#d9d3c2;
+    --teal:#3F6D6A;
+    --red:#C4472F;
+    --line: rgba(243,239,230,0.14);
+    --card-text: rgba(243,239,230,0.72);
+    --card-text-2: rgba(243,239,230,0.5);
+  }
+  html[data-theme="light"]{
+    --ink:#F3EFE6;
+    --ink-2:#FFFFFF;
+    --gold:#C4832A;
+    --gold-dim:#a86c1f;
+    --paper:#181C2E;
+    --paper-dim:#3a3f57;
+    --teal:#2F5451;
+    --red:#B3402A;
+    --line: rgba(24,28,46,0.12);
+    --card-text: rgba(24,28,46,0.68);
+    --card-text-2: rgba(24,28,46,0.48);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html,body{background:var(--ink); color:var(--paper); font-family:'Inter',sans-serif; overflow-x:hidden; transition:background .25s ease, color .25s ease;}
+  body{
+    min-height:100vh;
+    background:
+      radial-gradient(circle at 15% 0%, rgba(63,109,106,0.25), transparent 45%),
+      radial-gradient(circle at 90% 20%, rgba(232,169,59,0.10), transparent 40%),
+      var(--ink);
+  }
+  html[data-theme="light"] body{
+    background:
+      radial-gradient(circle at 15% 0%, rgba(47,84,81,0.08), transparent 45%),
+      radial-gradient(circle at 90% 20%, rgba(196,131,42,0.10), transparent 40%),
+      var(--ink);
+  }
+  ::selection{background:var(--gold); color:var(--ink);}
+
+  .wrap{max-width:640px; margin:0 auto; padding:0 20px 80px;}
+
+  /* ---------- top ticker ---------- */
+  .ticker{
+    background:var(--ink-2); border-bottom:1px solid var(--line);
+    overflow:hidden; white-space:nowrap; padding:9px 0;
+    font-family:'Space Mono',monospace; font-size:11px; letter-spacing:0.06em;
+    color:var(--gold); position:relative;
+  }
+  .ticker span{display:inline-block; padding-right:48px; animation: scroll 22s linear infinite;}
+  @keyframes scroll{ from{transform:translateX(0);} to{transform:translateX(-50%);} }
+
+  /* theme toggle */
+  .theme-toggle{
+    position:fixed; top:16px; right:16px; z-index:50;
+    display:flex; align-items:center; gap:6px;
+    background:var(--ink-2); border:1px solid var(--line); border-radius:100px;
+    padding:5px; box-shadow:0 6px 18px rgba(0,0,0,0.25);
+  }
+  .theme-toggle button{
+    width:32px; height:32px; border-radius:50%; border:none; background:transparent;
+    color:var(--card-text-2); cursor:pointer; display:flex; align-items:center; justify-content:center;
+    transition:.15s ease;
+  }
+  .theme-toggle button.active{background:var(--gold); color:var(--ink);}
+  .theme-toggle button:hover:not(.active){color:var(--paper);}
+
+  /* ---------- header ---------- */
+  header{padding:52px 0 30px; text-align:center;}
+  h1{
+    font-family:'Fraunces',serif; font-optical-sizing:auto; font-weight:600;
+    font-size:clamp(34px,7vw,54px); line-height:1.04; letter-spacing:-0.01em;
+  }
+  h1 em{font-style:italic; color:var(--gold); font-weight:500;}
+  .sub{
+    margin-top:16px; font-size:16px; line-height:1.55; color:var(--card-text);
+    max-width:460px; margin-left:auto; margin-right:auto;
+  }
+
+  /* ---------- card shell ---------- */
+  .card{
+    background:var(--ink-2); border:1px solid var(--line); border-radius:14px;
+    padding:32px; margin-top:26px; position:relative;
+  }
+  .step-label{
+    font-family:'Space Mono',monospace; font-size:11px; letter-spacing:0.14em;
+    text-transform:uppercase; color:var(--gold); margin-bottom:6px;
+  }
+  .q-title{font-family:'Fraunces',serif; font-weight:600; font-size:23px; line-height:1.25; margin-bottom:22px;}
+
+  .opt{
+    display:flex; align-items:center; gap:14px; width:100%; text-align:left;
+    background:rgba(128,128,128,0.05); border:1px solid var(--line); color:var(--paper);
+    padding:16px 18px; border-radius:10px; font-family:'Inter',sans-serif; font-size:15px;
+    font-weight:500; cursor:pointer; margin-bottom:10px; transition:.15s ease;
+  }
+  .opt:hover{border-color:var(--gold); background:rgba(232,169,59,0.08); transform:translateX(3px);}
+  .opt .k{
+    font-family:'Space Mono',monospace; font-size:11px; color:var(--teal);
+    border:1px solid rgba(63,109,106,0.5); border-radius:5px; padding:3px 7px; flex-shrink:0;
+  }
+  .opt.selected{border-color:var(--gold); background:rgba(232,169,59,0.12);}
+
+  /* progress */
+  .progress-track{height:5px; background:var(--ink-2); border:1px solid var(--line); border-radius:100px; margin-top:20px; overflow:hidden;}
+  .progress-fill{height:100%; background:linear-gradient(90deg,var(--teal),var(--gold)); width:0%; transition:width .35s ease;}
+  .progress-meta{display:flex; justify-content:space-between; font-family:'Space Mono',monospace; font-size:10.5px; color:var(--card-text-2); margin-top:8px; letter-spacing:0.04em;}
+
+  .nav-row{display:flex; justify-content:space-between; align-items:center; margin-top:18px;}
+  .back-btn{background:none; border:none; color:var(--card-text-2); font-family:'Inter',sans-serif; font-size:13px; cursor:pointer; padding:6px 4px;}
+  .back-btn:hover{color:var(--paper);}
+  .back-btn:disabled{visibility:hidden;}
+
+  input[type=text]{
+    width:100%; background:rgba(128,128,128,0.05); border:1px solid var(--line); color:var(--paper);
+    padding:16px 18px; border-radius:10px; font-family:'Inter',sans-serif; font-size:15px; margin-bottom:14px;
+  }
+  input[type=text]:focus{outline:none; border-color:var(--gold);}
+  .continue-btn{
+    width:100%; background:var(--gold); color:var(--ink); border:none; padding:16px;
+    border-radius:10px; font-family:'Inter',sans-serif; font-weight:700; font-size:15px; cursor:pointer;
+    transition:.15s ease;
+  }
+  .continue-btn:hover{filter:brightness(1.08); transform:translateY(-1px);}
+  .continue-btn:disabled{opacity:0.35; cursor:not-allowed; transform:none;}
+
+  /* ---------- loading ---------- */
+  .loading-wrap{text-align:center; padding:70px 20px;}
+  .spinner{
+    width:52px; height:52px; margin:0 auto 26px; border-radius:50%;
+    border:3px solid var(--line); border-top-color:var(--gold);
+    animation:spin 0.85s linear infinite;
+  }
+  @keyframes spin{to{transform:rotate(360deg);}}
+  .loading-line{font-family:'Space Mono',monospace; font-size:13px; color:var(--card-text); margin-top:8px; min-height:18px;}
+
+  /* ---------- ticket / result ---------- */
+  .ticket{
+    background:#F3EFE6; color:#12172B; border-radius:16px; overflow:hidden;
+    position:relative; box-shadow:0 30px 60px -20px rgba(0,0,0,0.6);
+  }
+  .ticket-top{padding:30px 30px 24px; position:relative;}
+  .ticket-top::after{
+    content:""; position:absolute; left:0; right:0; bottom:0; height:1px;
+    background-image:repeating-linear-gradient(90deg, #12172B 0 8px, transparent 8px 16px); opacity:0.18;
+  }
+  .perf-row{position:relative; height:0;}
+  .perf-row::before, .perf-row::after{
+    content:""; position:absolute; top:-9px; width:18px; height:18px; background:var(--ink);
+    border-radius:50%; transition:background .25s ease;
+  }
+  .perf-row::before{left:-9px;} .perf-row::after{right:-9px;}
+
+  .ticket-brand{
+    display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:22px;
+  }
+  .ticket-brand .stamp{
+    font-family:'Space Mono',monospace; font-size:10px; letter-spacing:0.1em; text-transform:uppercase;
+    border:1.5px solid #C4472F; color:#C4472F; padding:5px 10px; border-radius:5px; transform:rotate(3deg);
+  }
+  .ticket-brand .bl{font-family:'Space Mono',monospace; font-size:11px; letter-spacing:0.14em; color:rgba(18,23,43,0.5); text-transform:uppercase;}
+
+  .verdict-tag{
+    font-family:'Space Mono',monospace; font-size:11.5px; letter-spacing:0.1em; text-transform:uppercase;
+    color:#3F6D6A; font-weight:700; margin-bottom:10px;
+  }
+  .verdict-title{
+    font-family:'Fraunces',serif; font-weight:700; font-size:clamp(26px,6vw,34px); line-height:1.08; margin-bottom:12px;
+  }
+  .verdict-title .num{color:#c8932f;}
+  .verdict-desc{font-size:14.5px; line-height:1.6; color:rgba(18,23,43,0.75); max-width:480px;}
+
+  .ticket-bottom{padding:28px 30px 30px;}
+
+  .ledger-item{
+    display:flex; gap:14px; padding:16px 0; border-bottom:1px solid rgba(18,23,43,0.1);
+  }
+  .ledger-item:last-child{border-bottom:none;}
+  .ledger-num{
+    font-family:'Space Mono',monospace; font-weight:700; font-size:13px; color:#F3EFE6;
+    background:#12172B; width:26px; height:26px; border-radius:6px; display:flex; align-items:center; justify-content:center;
+    flex-shrink:0; margin-top:2px;
+  }
+  .ledger-body h4{font-family:'Inter',sans-serif; font-weight:700; font-size:15px; margin-bottom:4px;}
+  .ledger-body p{font-size:13.5px; line-height:1.55; color:rgba(18,23,43,0.7);}
+  .ledger-body .tag{
+    display:inline-block; margin-top:7px; font-family:'Space Mono',monospace; font-size:10px;
+    letter-spacing:0.05em; text-transform:uppercase; background:rgba(63,109,106,0.12); color:#3F6D6A;
+    padding:3px 8px; border-radius:5px;
+  }
+
+  .metrics-row{display:flex; gap:10px; margin-top:22px;}
+  .metric{flex:1; background:rgba(18,23,43,0.05); border:1px solid rgba(18,23,43,0.1); border-radius:10px; padding:14px 12px; text-align:center;}
+  .metric .v{font-family:'Fraunces',serif; font-weight:700; font-size:20px; color:#12172B;}
+  .metric .l{font-family:'Space Mono',monospace; font-size:9.5px; letter-spacing:0.06em; text-transform:uppercase; color:rgba(18,23,43,0.55); margin-top:4px;}
+
+  .gap-callout{
+    margin-top:22px; background:rgba(196,71,47,0.08); border:1px solid rgba(196,71,47,0.35);
+    border-radius:10px; padding:16px 18px;
+  }
+  .gap-callout .gt{font-family:'Space Mono',monospace; font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:#C4472F; font-weight:700; margin-bottom:5px;}
+  .gap-callout p{font-size:13.5px; line-height:1.6; color:rgba(18,23,43,0.78);}
+
+  .insight-block{
+    margin-top:14px; background:rgba(63,109,106,0.07); border:1px solid rgba(63,109,106,0.28);
+    border-radius:10px; padding:16px 18px;
+  }
+  .insight-block .gt{font-family:'Space Mono',monospace; font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:#3F6D6A; font-weight:700; margin-bottom:5px;}
+  .insight-block p{font-size:13.5px; line-height:1.6; color:rgba(18,23,43,0.78);}
+
+  .contrast-line{
+    margin-top:16px; padding-left:16px; border-left:3px solid #c8932f;
+  }
+  .contrast-line p{font-family:'Fraunces',serif; font-style:italic; font-size:14.5px; line-height:1.55; color:rgba(18,23,43,0.72);}
+
+  .mistake-callout{
+    margin-top:14px; background:rgba(196,71,47,0.06); border:1px solid rgba(196,71,47,0.3);
+    border-radius:10px; padding:16px 18px;
+  }
+  .mistake-callout .gt{font-family:'Space Mono',monospace; font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:#C4472F; font-weight:700; margin-bottom:5px;}
+  .mistake-callout p{font-size:13.5px; line-height:1.6; color:rgba(18,23,43,0.78);}
+
+  /* ---------- upsell ---------- */
+  .upsell{
+    margin-top:26px; background:linear-gradient(160deg, var(--ink-2), var(--ink));
+    border:1px solid rgba(232,169,59,0.35); border-radius:16px; padding:32px 28px; position:relative; overflow:hidden;
+  }
+  .upsell::before{
+    content:""; position:absolute; top:-60px; right:-60px; width:200px; height:200px;
+    background:radial-gradient(circle, rgba(232,169,59,0.25), transparent 70%);
+  }
+  .upsell-eyebrow{
+    font-family:'Space Mono',monospace; font-size:11px; letter-spacing:0.12em; text-transform:uppercase;
+    color:var(--gold); margin-bottom:14px; position:relative;
+  }
+  .upsell h3{font-family:'Fraunces',serif; font-weight:600; font-size:26px; line-height:1.18; margin-bottom:14px; position:relative;}
+  .upsell h3 em{font-style:italic; color:var(--gold);}
+  .upsell p.lead{font-size:14.5px; line-height:1.65; color:var(--card-text); margin-bottom:22px; position:relative;}
+
+  .bundle-list{list-style:none; position:relative; margin-bottom:22px; border:1px solid var(--line); border-radius:12px; overflow:hidden;}
+  .bundle-item{
+    display:flex; justify-content:space-between; align-items:center; gap:14px;
+    padding:14px 16px; border-bottom:1px solid var(--line); background:rgba(128,128,128,0.03);
+  }
+  .bundle-item:last-child{border-bottom:none;}
+  .bundle-item .bi-left{display:flex; align-items:center; gap:12px;}
+  .bundle-item .bi-name{font-family:'Inter',sans-serif; font-weight:600; font-size:13.5px; color:var(--paper);}
+  .bundle-item .bi-price{font-family:'Space Mono',monospace; font-size:12.5px; color:var(--card-text-2); text-decoration:line-through; white-space:nowrap;}
+  .bundle-total-row{
+    display:flex; justify-content:space-between; align-items:center; padding:14px 16px;
+    background:rgba(232,169,59,0.1);
+  }
+  .bundle-total-row .bt-label{font-family:'Space Mono',monospace; font-size:11px; letter-spacing:0.06em; text-transform:uppercase; color:var(--gold);}
+  .bundle-total-row .bt-value{font-family:'Space Mono',monospace; font-size:13px; color:var(--card-text-2); text-decoration:line-through;}
+
+  .price-row{
+    display:flex; align-items:center; gap:12px; margin-bottom:18px; position:relative;
+  }
+  .price-old{font-family:'Space Mono',monospace; font-size:16px; color:var(--card-text-2); text-decoration:line-through;}
+  .price-new{font-family:'Fraunces',serif; font-weight:700; font-size:32px; color:var(--gold);}
+  .price-note{font-family:'Space Mono',monospace; font-size:10.5px; color:var(--card-text-2); text-transform:uppercase; letter-spacing:0.05em;}
+
+  .cta-btn{
+    display:block; width:100%; text-align:center; text-decoration:none; background:var(--gold); color:var(--ink);
+    font-family:'Inter',sans-serif; font-weight:800; font-size:15.5px; padding:18px; border-radius:11px;
+    position:relative; transition:.15s ease; border:none; cursor:pointer;
+  }
+  .cta-btn:hover{filter:brightness(1.08); transform:translateY(-2px); box-shadow:0 12px 24px -8px rgba(232,169,59,0.5);}
+  .cta-sub{text-align:center; font-family:'Space Mono',monospace; font-size:10.5px; color:var(--card-text-2); margin-top:10px; letter-spacing:0.03em; position:relative;}
+
+  .download-btn{
+    width:100%; margin-top:16px; display:flex; align-items:center; justify-content:center; gap:9px;
+    background:var(--ink-2); border:1px solid var(--line); color:var(--paper);
+    font-family:'Inter',sans-serif; font-weight:700; font-size:14px; padding:15px; border-radius:11px;
+    cursor:pointer; transition:.15s ease;
+  }
+  .download-btn:hover{border-color:var(--gold); color:var(--gold);}
+
+  .rhythm-card{
+    margin-top:26px; background:var(--ink-2); border:1px solid var(--line); border-radius:14px; padding:28px 26px;
+  }
+  .rhythm-eyebrow{
+    font-family:'Space Mono',monospace; font-size:11px; letter-spacing:0.12em; text-transform:uppercase;
+    color:var(--gold); margin-bottom:10px;
+  }
+  .rhythm-title{font-family:'Fraunces',serif; font-weight:700; font-size:26px; margin-bottom:10px; color:var(--paper);}
+  .rhythm-detail{font-size:14px; line-height:1.6; color:var(--card-text); margin-bottom:0;}
+  .rhythm-divider{height:1px; background:var(--line); margin:20px 0;}
+  .rhythm-angle-label{font-family:'Inter',sans-serif; font-weight:700; font-size:15px; color:var(--paper); margin-bottom:8px;}
+
+  .mix-list{display:flex; flex-direction:column; gap:8px;}
+  .mix-row{
+    display:flex; align-items:center; gap:12px; background:rgba(128,128,128,0.05);
+    border:1px solid var(--line); border-radius:8px; padding:10px 14px;
+  }
+  .mix-count{
+    font-family:'Space Mono',monospace; font-weight:700; font-size:13px; color:var(--ink);
+    background:var(--gold); min-width:26px; height:26px; padding:0 8px; border-radius:6px;
+    display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  }
+  .mix-label{font-size:14px; color:var(--card-text);}
+
+  .starter-list{list-style:none; padding:0; margin:0; counter-reset:starter;}
+  .starter-list li{
+    counter-increment:starter; position:relative; padding-left:30px; font-size:14px; line-height:1.55;
+    color:var(--card-text); margin-bottom:10px;
+  }
+  .starter-list li:last-child{margin-bottom:0;}
+  .starter-list li::before{
+    content:counter(starter); position:absolute; left:0; top:1px; width:20px; height:20px;
+    border:1px solid var(--teal); color:var(--teal); border-radius:50%; font-family:'Space Mono',monospace;
+    font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center;
+  }
+  .rhythm-note{
+    margin-top:18px; padding-top:16px; border-top:1px dashed var(--line);
+    font-family:'Space Mono',monospace; font-size:11.5px; line-height:1.6; color:var(--card-text-2);
+  }
+
+  @media print{
+    .theme-toggle, .ticker, header, #quiz-area, #loading-area, .upsell, .download-btn, .restart{display:none !important;}
+    body{background:#fff !important;}
+    .wrap{max-width:100%; padding:0;}
+    .ticket{box-shadow:none; border:1px solid #ccc;}
+    .rhythm-card{background:#fff; border:1px solid #ccc; color:#12172B;}
+    .rhythm-title, .rhythm-angle-label{color:#12172B;}
+    .rhythm-detail, .rhythm-note{color:#444;}
+    .mix-row{background:#fff; border:1px solid #ddd;}
+    .mix-label{color:#333;}
+    .starter-list li{color:#333;}
+    .starter-list li::before{border-color:#3F6D6A; color:#3F6D6A;}
+  }
+
+  .restart{
+    display:block; text-align:center; margin-top:22px; color:var(--card-text-2);
+    font-family:'Space Mono',monospace; font-size:11.5px; letter-spacing:0.04em; text-decoration:underline; cursor:pointer; background:none; border:none; width:100%;
+  }
+  .restart:hover{color:var(--paper);}
+
+  .hidden{display:none !important;}
+
+  @media (prefers-reduced-motion: reduce){
+    .ticker span, .spinner{animation:none !important;}
+  }
+
+  @media(max-width:480px){
+    .card{padding:24px 18px;} .ticket-top{padding:24px 20px 20px;} .ticket-bottom{padding:22px 20px 24px;}
+    .metrics-row{flex-wrap:wrap;} .metric{min-width:calc(50% - 5px);}
+    .theme-toggle{top:auto; bottom:16px; right:16px;}
+    .bundle-item{flex-wrap:wrap;}
+  }
+</style>
+</head>
+<body>
+
+<div class="theme-toggle" id="theme-toggle" role="group" aria-label="Theme">
+  <button id="btn-dark" class="active" aria-label="Dark mode" title="Dark mode">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+  <button id="btn-light" aria-label="Light mode" title="Light mode">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+  </button>
+</div>
+
+<div class="ticker"><span>DIGITAL PRODUCT INCOME &nbsp;•&nbsp; VALIDATED IDEAS &nbsp;•&nbsp; DAILY SALES SYSTEMS &nbsp;•&nbsp; DIGITAL PRODUCT INCOME &nbsp;•&nbsp; VALIDATED IDEAS &nbsp;•&nbsp; DAILY SALES SYSTEMS &nbsp;•&nbsp; DIGITAL PRODUCT INCOME &nbsp;•&nbsp;</span></div>
+
+<div class="wrap">
+
+  <header id="header">
+    <h1>Build your <em>$1K/day</em><br>game plan</h1>
+    <p class="sub">Answer a few quick questions. Get a personalized route to your first $1,000 day with digital products, built around your actual situation, plus a downloadable copy to keep.</p>
+  </header>
+
+  <!-- QUIZ -->
+  <div id="quiz-area"></div>
+
+  <!-- LOADING -->
+  <div id="loading-area" class="card hidden">
+    <div class="loading-wrap">
+      <div class="spinner"></div>
+      <div style="font-family:'Fraunces',serif; font-weight:600; font-size:19px;">Building your game plan…</div>
+      <div class="loading-line" id="loading-line">Reading your answers</div>
+    </div>
+  </div>
+
+  <!-- RESULT -->
+  <div id="result-area" class="hidden"></div>
+
+</div>
+
+<script>
+/* ============ THEME ============ */
+const root = document.documentElement;
+const btnDark = document.getElementById('btn-dark');
+const btnLight = document.getElementById('btn-light');
+function setTheme(mode){
+  root.setAttribute('data-theme', mode);
+  btnDark.classList.toggle('active', mode==='dark');
+  btnLight.classList.toggle('active', mode==='light');
+  try{ localStorage.setItem('gp-theme', mode); }catch(e){}
+}
+btnDark.addEventListener('click', ()=>setTheme('dark'));
+btnLight.addEventListener('click', ()=>setTheme('light'));
+(function initTheme(){
+  let saved = null;
+  try{ saved = localStorage.getItem('gp-theme'); }catch(e){}
+  setTheme(saved === 'light' ? 'light' : 'dark');
+})();
+
+/* ============ CONFIG ============ */
+const CHECKOUT_URL = "#"; // TODO: paste your $1K/Day System LemonSqueezy or Systeme.io checkout URL here
+
+const QUESTIONS = [
+  {
+    key: "stage",
+    title: "Where are you right now?",
+    options: [
+      { k:"A", label:"Total beginner, no product, no audience yet" },
+      { k:"B", label:"I have an idea but haven't launched anything" },
+      { k:"C", label:"I've launched something, but sales are inconsistent" },
+      { k:"D", label:"I've made some sales, I want to scale to daily" },
+    ]
+  },
+  {
+    key: "time",
+    title: "How much time can you realistically put in per day?",
+    options: [
+      { k:"A", label:"Under 30 minutes, I'm juggling a job/school" },
+      { k:"B", label:"1 hour" },
+      { k:"C", label:"2 to 3 hours" },
+      { k:"D", label:"4+ hours, this is my main focus" },
+    ]
+  },
+  {
+    key: "product",
+    title: "What kind of product feels most 'you'?",
+    options: [
+      { k:"A", label:"Templates, planners, or trackers" },
+      { k:"B", label:"Guides / ebooks that teach something" },
+      { k:"C", label:"Done-for-you services, design, setup, done for others" },
+      { k:"D", label:"Not sure yet, I need help picking" },
+    ]
+  },
+  {
+    key: "blocker",
+    title: "What's actually stopped you so far?",
+    options: [
+      { k:"A", label:"I don't know what to sell" },
+      { k:"B", label:"I don't know how to get eyes on it" },
+      { k:"C", label:"I built it, but nobody's buying" },
+      { k:"D", label:"I keep starting over from scratch" },
+    ]
+  },
+  {
+    key: "audience",
+    title: "Do you have any audience to sell to right now?",
+    options: [
+      { k:"A", label:"None, I'd be starting from zero followers" },
+      { k:"B", label:"A small following (under 1,000) on one platform" },
+      { k:"C", label:"A decent following, but they don't buy much" },
+      { k:"D", label:"A real audience, I just haven't sold to them yet" },
+    ]
+  },
+  {
+    key: "pricing",
+    title: "If you launched today, what would you probably price it at?",
+    options: [
+      { k:"A", label:"I have no idea, I'd probably guess or go too cheap" },
+      { k:"B", label:"Under $10, I'm scared to charge more" },
+      { k:"C", label:"$10 to $50, but I'm not confident in it" },
+      { k:"D", label:"$50+, I just haven't launched it yet" },
+    ]
+  },
+  {
+    key: "consistency",
+    title: "What usually happens after you start something new?",
+    options: [
+      { k:"A", label:"I go hard for a few days, then life gets in the way" },
+      { k:"B", label:"I finish the setup, then never actually promote it" },
+      { k:"C", label:"I stay consistent, but results come slowly" },
+      { k:"D", label:"I follow through, I just need the right plan" },
+    ]
+  },
+  {
+    key: "name",
+    title: "Last thing, what should we call you on your game plan?",
+    input: true
+  }
+];
+
+let current = 0;
+let answers = {};
+let ticketNumber = null;
+
+const quizArea = document.getElementById('quiz-area');
+const loadingArea = document.getElementById('loading-area');
+const resultArea = document.getElementById('result-area');
+const header = document.getElementById('header');
+
+function renderQuiz(){
+  const q = QUESTIONS[current];
+  const pct = Math.round((current/QUESTIONS.length)*100);
+
+  let optsHtml = "";
+  if(q.input){
+    optsHtml = `
+      <input type="text" id="name-input" placeholder="First name" autocomplete="off" value="${answers.name||''}">
+      <button class="continue-btn" id="continue-btn" ${answers.name ? '' : 'disabled'}>See my game plan →</button>
+    `;
+  } else {
+    optsHtml = q.options.map(o => `
+      <button class="opt ${answers[q.key]===o.k?'selected':''}" data-k="${o.k}">
+        <span class="k">${o.k}</span><span>${o.label}</span>
+      </button>
+    `).join("");
+  }
+
+  quizArea.innerHTML = `
+    <div class="card">
+      <div class="step-label">Step ${current+1} of ${QUESTIONS.length}</div>
+      <div class="q-title">${q.title}</div>
+      ${optsHtml}
+      <div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div>
+      <div class="progress-meta"><span>PROGRESS</span><span>${pct}%</span></div>
+      <div class="nav-row">
+        <button class="back-btn" id="back-btn" ${current===0?'disabled':''}>← Back</button>
+        <div></div>
+      </div>
+    </div>
+  `;
+
+  if(q.input){
+    const inp = document.getElementById('name-input');
+    const btn = document.getElementById('continue-btn');
+    inp.addEventListener('input', ()=>{
+      answers.name = inp.value.trim();
+      btn.disabled = answers.name.length === 0;
+    });
+    inp.addEventListener('keydown', (e)=>{ if(e.key==='Enter' && answers.name) advance(); });
+    btn.addEventListener('click', advance);
+    setTimeout(()=>inp.focus(), 50);
+  } else {
+    document.querySelectorAll('.opt').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        answers[q.key] = btn.dataset.k;
+        setTimeout(advance, 180);
+      });
+    });
+  }
+
+  document.getElementById('back-btn').addEventListener('click', ()=>{
+    if(current>0){ current--; renderQuiz(); }
+  });
+}
+
+function advance(){
+  if(current < QUESTIONS.length - 1){
+    current++;
+    renderQuiz();
+  } else {
+    runLoading();
+  }
+}
+
+function runLoading(){
+  quizArea.classList.add('hidden');
+  header.classList.add('hidden');
+  loadingArea.classList.remove('hidden');
+  const lines = [
+    "Reading your answers",
+    "Matching your stage to a starting product path",
+    "Calculating your realistic timeline",
+    "Flagging your number one blocker",
+    "Checking your pricing and audience gap",
+    "Finalizing your game plan"
+  ];
+  const lineEl = document.getElementById('loading-line');
+  let i = 0;
+  lineEl.textContent = lines[0];
+  const iv = setInterval(()=>{
+    i++;
+    if(i < lines.length){ lineEl.textContent = lines[i]; }
+    else { clearInterval(iv); showResult(); }
+  }, 420);
+}
+
+/* ============ RESULT LOGIC ============ */
+
+const PRODUCT_PATH = {
+  A: { name:"Templates & Trackers", detail:"Build one simple template, planner, or tracker solving one specific problem you've personally had." },
+  B: { name:"Teaching Guide", detail:"Package a process you already understand into a short, specific how-to guide, not a broad topic, a narrow result." },
+  C: { name:"Done-For-You Service", detail:"Package a repeatable service, design, setup, done-for-you work, into a fixed-price offer you can deliver in a day." },
+  D: { name:"Validated Starter Product", detail:"Skip guessing. Start from a pre-validated idea format so you're not spending weeks testing what people actually want." }
+};
+
+const BLOCKER_FIX = {
+  A: { tag:"Idea Clarity", text:"You're stuck at idea selection, not execution. The fix isn't 'brainstorm harder', it's working from a pre-validated shortlist so you stop second-guessing what to build." },
+  B: { tag:"Visibility", text:"You have something worth selling but no reliable way to get it in front of buyers. You need one repeatable distribution channel, not five random ones." },
+  C: { tag:"Conversion", text:"Traffic isn't the problem, your offer or page is. This usually comes down to unclear positioning or a weak first-sale hook, both fixable in an afternoon." },
+  D: { tag:"Follow-Through", text:"You don't have an idea problem, you have a system problem. You need a repeatable, boring process you follow daily instead of restarting your strategy every few weeks." }
+};
+
+const STAGE_META = {
+  A: { num:"01" }, B: { num:"01" }, C: { num:"02" }, D: { num:"03" }
+};
+
+const STAGE_CONTRAST = {
+  A: "Most total beginners spend their first month researching platforms and comparing tools instead of picking one product and shipping it. That research feels like progress, it isn't.",
+  B: "Most people with an unlaunched idea rewrite or \"improve\" it for weeks before ever putting it in front of a buyer. The idea isn't the bottleneck, launching an imperfect version of it is.",
+  C: "Most people with inconsistent sales blame traffic and go chase more followers or more posts. The actual fix is almost always the offer itself, not the audience size.",
+  D: "Most people who've made a few sales try to add new products instead of repeating what already worked. Scaling to daily comes from repetition, not expansion."
+};
+
+const STAGE_MISTAKE = {
+  A: { tag:"Beginner Mistake", text:"Trying to build the \"perfect\" first product before showing it to anyone. A rough version that's actually for sale will teach you more in a week than a polished one still in drafts." },
+  B: { tag:"Stalled-Idea Mistake", text:"Treating your unlaunched idea as precious and waiting for the right moment to release it. There is no right moment, only a launched version and an unlaunched one." },
+  C: { tag:"Inconsistent-Sales Mistake", text:"Changing your product or price every time a launch underperforms, instead of fixing the offer's positioning first. Constant pivoting resets your progress each time." },
+  D: { tag:"Scaling Mistake", text:"Launching a second or third product before your first one is repeatable. Daily sales come from doubling down on what's already converting, not diversifying too early." }
+};
+
+const TIME_META = {
+  A: "30 focused minutes a day is enough to launch, you just can't afford to waste any of it guessing.",
+  B: "1 hour a day is a real runway, more than enough to get your first product built if you stay focused on one task at a time.",
+  C: "2 to 3 hours a day puts you ahead of most people who never start. Consistency at this pace matters more than speed.",
+  D: "4+ hours a day means your bottleneck isn't time, it's direction. You need a system, not more hours."
+};
+
+const AUDIENCE_INSIGHT = {
+  A: { tag:"Zero-Audience Path", text:"You'd be starting with no built-in audience, so your plan has to lean on a channel that puts you in front of strangers, not just people who already know you. That changes which platform and format you should pick first." },
+  B: { tag:"Small Audience Leverage", text:"A following under 1,000 is more than enough to get a first sale, most first $1,000 days come from a small, warm audience, not a huge one. The move is a direct offer to the people already watching, not more content." },
+  C: { tag:"Audience-Offer Mismatch", text:"You already have reach, so this isn't an audience problem, it's an offer problem. People are watching but not buying, which almost always means the offer doesn't match what they came to you for." },
+  D: { tag:"Untapped Audience", text:"You're sitting on an asset most beginners don't have. The single fastest path to your first $1,000 day is a direct offer to your existing audience before you spend any energy finding new people." }
+};
+
+const PRICING_INSIGHT = {
+  A: { tag:"Pricing Guesswork", text:"Guessing a price is one of the most common reasons launches stall, price too low and it feels unserious, price too high with no anchor and it feels random. You need a pricing structure that's already been tested, not a guess." },
+  B: { tag:"Underpricing Risk", text:"Pricing under $10 out of fear usually backfires, it signals low value and still doesn't remove the fear of charging more later. A tested price anchor removes the guesswork so you're not leaving money on your first sales." },
+  C: { tag:"Confidence Gap", text:"You're in a reasonable price range but not confident in it, which usually means the offer isn't positioned clearly enough to justify the number. Fixing the positioning fixes the confidence." },
+  D: { tag:"Ready to Anchor", text:"You're already thinking at the right price range, the only thing missing is actually launching it. Don't let pricing be the reason this stays unlaunched." }
+};
+
+const POSTING_CADENCE = {
+  A: { freq:"3 posts / week", detail:"With 30 focused minutes a day, spread across the week instead of daily. Quality over frequency, every post should point at one thing." },
+  B: { freq:"4 to 5 posts / week", detail:"With 1 hour a day, near-daily posting is realistic without burning out. Pick one format you can repeat, not five different ones." },
+  C: { freq:"Daily posts", detail:"With 2 to 3 hours a day, daily posting plus engagement time is realistic. Consistency here compounds faster than any single viral post." },
+  D: { freq:"Daily posts + outreach", detail:"With 4+ hours a day, daily content plus direct outreach to potential buyers, not just posting and waiting." }
+};
+
+const POSTING_CHANNEL = {
+  A: { angle:"Build in public, from zero", text:"With no existing audience, every post should be written for a stranger scrolling past, not a fan who already knows you. Lead with the specific problem your product solves, not your journey." },
+  B: { angle:"Talk directly to your small following", text:"With a following under 1,000, your posts should speak directly to the people already there. A direct, personal offer to a small warm audience outperforms broad content aimed at strangers." },
+  C: { angle:"Shift content toward the offer", text:"You already post to real reach, the shift is content that leads to your product, not just engagement. Every third post should mention what you're selling and why." },
+  D: { angle:"Turn existing content into a launch", text:"You have real reach and haven't sold to it yet. Your next posts should announce the offer directly instead of hoping people find it in your bio." }
+};
+
+const CONTENT_MIX = {
+  A: [
+    { label:"Value / how-to posts", count:"2" },
+    { label:"Behind-the-scenes / process posts", count:"1" }
+  ],
+  B: [
+    { label:"Value / how-to posts", count:"3" },
+    { label:"Offer / product posts", count:"1" },
+    { label:"Proof or testimonial posts", count:"1" }
+  ],
+  C: [
+    { label:"Value / how-to posts", count:"4" },
+    { label:"Offer / product posts", count:"2" },
+    { label:"Proof or testimonial posts", count:"1" }
+  ],
+  D: [
+    { label:"Value / how-to posts", count:"4" },
+    { label:"Offer / product posts", count:"3" },
+    { label:"Proof or testimonial posts", count:"2" },
+    { label:"Direct outreach messages", count:"Daily" }
+  ]
+};
+
+const STARTER_POSTS = {
+  A: [
+    "Show the exact template or tracker solving one specific problem, before and after",
+    "Share the problem you personally had before building this, in plain language",
+    "Post a quick tip pulled directly from inside your product, free value first"
+  ],
+  B: [
+    "Break down one lesson from your guide as a short standalone post",
+    "Share the specific result someone could get by following your guide",
+    "Post the single biggest mistake people make in your topic, and the fix"
+  ],
+  C: [
+    "Show a before-and-after of work you've done for a client or yourself",
+    "Post the exact process you follow, step by step, as a carousel or thread",
+    "Share a quick win you delivered recently, with the outcome, not just the task"
+  ],
+  D: [
+    "Post about the problem your product solves, without naming it yet",
+    "Ask your audience the exact question your product answers",
+    "Share your own decision process for picking this over other options"
+  ]
+};
+
+function buildSteps(a){
+  const p = PRODUCT_PATH[a.product];
+  const b = BLOCKER_FIX[a.blocker];
+  const steps = [];
+
+  steps.push({
+    title: "Lock your starting product",
+    body: `Based on your answers, your best entry point is a ${p.name.toLowerCase()}. ${p.detail}`,
+    tag: p.name
+  });
+
+  steps.push({
+    title: "Fix your real blocker first",
+    body: b.text,
+    tag: b.tag
+  });
+
+  if(a.stage === "A" || a.stage === "B"){
+    steps.push({
+      title: "Ship an ugly first version this week",
+      body: "Don't wait for it to be perfect. A rough product that's live and selling beats a polished one still sitting in drafts. Aim to have something purchasable within 7 days.",
+      tag: "Launch Speed"
+    });
+  } else if(a.stage === "C"){
+    steps.push({
+      title: "Rebuild your offer, not your product",
+      body: "Inconsistent sales almost always trace back to positioning, the price, the promise, or who it's for. Rewrite your offer around one specific outcome before touching the product itself.",
+      tag: "Offer Fix"
+    });
+  } else {
+    steps.push({
+      title: "Systemize what's already working",
+      body: "You've proven people will pay. Now turn your best-performing product into a repeatable daily process, same channel, same hook, same follow-up, every day.",
+      tag: "Systemize"
+    });
+  }
+
+  steps.push({
+    title: "Set your daily minimum",
+    body: `With your available time, your target is one small, repeatable action daily, not a big weekly push. ${TIME_META[a.time]}`,
+    tag: "Daily Action"
+  });
+
+  if(a.consistency === "A" || a.consistency === "B"){
+    steps.push({
+      title: "Remove the follow-through gap",
+      body: "Your pattern shows the setup isn't the problem, staying in motion after week one is. Pick one channel and one non-negotiable daily action, and track streaks instead of results for the first 14 days.",
+      tag: "Consistency Fix"
+    });
+  } else {
+    steps.push({
+      title: "Protect your consistency",
+      body: "You already follow through, so the plan's job is to make sure that consistency is pointed at the right actions instead of busywork that doesn't move sales.",
+      tag: "Direction Check"
+    });
+  }
+
+  return steps;
+}
+
+function showResult(){
+  loadingArea.classList.add('hidden');
+  const a = answers;
+  const stageMeta = STAGE_META[a.stage] || STAGE_META.B;
+  const steps = buildSteps(a);
+  const firstName = a.name || "Founder";
+
+  const stepsHtml = steps.map((s,i)=>`
+    <div class="ledger-item">
+      <div class="ledger-num">${i+1}</div>
+      <div class="ledger-body">
+        <h4>${s.title}</h4>
+        <p>${s.body}</p>
+        <span class="tag">${s.tag}</span>
+      </div>
+    </div>
+  `).join("");
+
+  const PACE_LABEL = {
+    A: "Steady Pace",
+    B: "Building Pace",
+    C: "Fast-Track Pace",
+    D: "Sprint Pace"
+  };
+  const paceEstimate = a.stage === "D" ? "Sprint Pace" : (PACE_LABEL[a.time] || "Building Pace");
+
+  const audienceI = AUDIENCE_INSIGHT[a.audience] || AUDIENCE_INSIGHT.A;
+  const pricingI = PRICING_INSIGHT[a.pricing] || PRICING_INSIGHT.A;
+  const cadence = POSTING_CADENCE[a.time] || POSTING_CADENCE.B;
+  const channel = POSTING_CHANNEL[a.audience] || POSTING_CHANNEL.A;
+  const contentMix = CONTENT_MIX[a.time] || CONTENT_MIX.B;
+  const starterPosts = STARTER_POSTS[a.product] || STARTER_POSTS.A;
+
+  resultArea.innerHTML = `
+    <div class="ticket">
+      <div class="ticket-top">
+        <div class="ticket-brand">
+          <div class="bl">Game Plan Ticket No. ${getTicketNumber()}</div>
+          <div class="stamp">Personalized</div>
+        </div>
+        <div class="verdict-tag">${firstName}'s Path, Stage ${stageMeta.num}</div>
+        <div class="verdict-title">You're closer than<br>you <span class="num">think</span>, ${firstName}.</div>
+        <div class="verdict-desc">Here's your specific route to a $1,000 day, built from where you actually are right now, not a generic "start a business" checklist.</div>
+
+        <div class="metrics-row">
+          <div class="metric"><div class="v">${paceEstimate}</div><div class="l">Your Timeline Pace</div></div>
+          <div class="metric"><div class="v">${BLOCKER_FIX[a.blocker].tag}</div><div class="l">No. 1 Fix Needed</div></div>
+        </div>
+
+        <div class="gap-callout">
+          <div class="gt">The Gap</div>
+          <p>${BLOCKER_FIX[a.blocker].text}</p>
+        </div>
+
+        <div class="contrast-line">
+          <p>${STAGE_CONTRAST[a.stage] || STAGE_CONTRAST.B}</p>
+        </div>
+
+        <div class="mistake-callout">
+          <div class="gt">⚠ ${STAGE_MISTAKE[a.stage].tag}</div>
+          <p>${STAGE_MISTAKE[a.stage].text}</p>
+        </div>
+
+        <div class="insight-block">
+          <div class="gt">${audienceI.tag}</div>
+          <p>${audienceI.text}</p>
+        </div>
+
+        <div class="insight-block">
+          <div class="gt">${pricingI.tag}</div>
+          <p>${pricingI.text}</p>
+        </div>
+      </div>
+      <div class="perf-row"></div>
+      <div class="ticket-bottom">
+        ${stepsHtml}
+      </div>
+    </div>
+
+    <div class="rhythm-card">
+      <div class="rhythm-eyebrow">Your Posting Rhythm</div>
+      <h3 class="rhythm-title">${cadence.freq}</h3>
+      <p class="rhythm-detail">${cadence.detail}</p>
+
+      <div class="rhythm-divider"></div>
+      <div class="rhythm-angle-label">${channel.angle}</div>
+      <p class="rhythm-detail">${channel.text}</p>
+
+      <div class="rhythm-divider"></div>
+      <div class="rhythm-angle-label">Your weekly content mix</div>
+      <div class="mix-list">
+        ${contentMix.map(m => `
+          <div class="mix-row">
+            <span class="mix-count">${m.count}</span>
+            <span class="mix-label">${m.label}</span>
+          </div>
+        `).join("")}
+      </div>
+
+      <div class="rhythm-divider"></div>
+      <div class="rhythm-angle-label">3 posts to start with this week</div>
+      <ul class="starter-list">
+        ${starterPosts.map(s => `<li>${s}</li>`).join("")}
+      </ul>
+
+      <div class="rhythm-note">This is a posting habit, not a sales guarantee. How many people buy still depends on your offer and your niche, this just keeps you consistent while the rest of the plan does its work.</div>
+    </div>
+
+    <button class="download-btn" id="download-btn">${downloadIcon()}Download my plan (PDF)</button>
+
+    <div class="upsell">
+      <div class="upsell-eyebrow">Your Next Step</div>
+      <h3>You know the plan. Want the <em>exact system</em> that runs it?</h3>
+      <p class="lead">This game plan tells you what to do. The <strong>$1K/Day System</strong> is the exact step-by-step toolkit I personally use to find validated product ideas, launch them fast, and turn them into daily sales, so you're not figuring out the how from scratch.</p>
+
+      <ul class="bundle-list">
+        <li class="bundle-item">
+          <div class="bi-left">${checkIcon()}<span class="bi-name">Digital Product Launch Blueprint</span></div>
+          <span class="bi-price">$27</span>
+        </li>
+        <li class="bundle-item">
+          <div class="bi-left">${checkIcon()}<span class="bi-name">Done-For-You Launch System</span></div>
+          <span class="bi-price">$37</span>
+        </li>
+        <li class="bundle-item">
+          <div class="bi-left">${checkIcon()}<span class="bi-name">Idea Validator + Income Estimator Tool</span></div>
+          <span class="bi-price">$27</span>
+        </li>
+        <li class="bundle-item">
+          <div class="bi-left">${checkIcon()}<span class="bi-name">500 Digital Product Ideas</span></div>
+          <span class="bi-price">$17</span>
+        </li>
+        <li class="bundle-item">
+          <div class="bi-left">${checkIcon()}<span class="bi-name">First 100 Buyers Playbook</span></div>
+          <span class="bi-price">$27</span>
+        </li>
+        <li class="bundle-total-row">
+          <span class="bt-label">Total value</span>
+          <span class="bt-value">$135</span>
+        </li>
+      </ul>
+
+      <div class="price-row">
+        <span class="price-new">$27</span>
+        <div>
+          <div class="price-old">$135</div>
+          <div class="price-note">One-time, lifetime access</div>
+        </div>
+      </div>
+      <a href="${CHECKOUT_URL}" class="cta-btn" target="_blank" rel="noopener">Get the $1K/Day System, $27 →</a>
+      <div class="cta-sub">Instant access, built for exactly where you are, ${firstName}</div>
+    </div>
+
+    <button class="restart" id="restart-btn">↻ Retake the game plan quiz</button>
+  `;
+  resultArea.classList.remove('hidden');
+  window.scrollTo({top:0, behavior:'smooth'});
+
+  document.getElementById('restart-btn').addEventListener('click', ()=>{
+    current = 0; answers = {}; ticketNumber = null;
+    resultArea.classList.add('hidden');
+    header.classList.remove('hidden');
+    quizArea.classList.remove('hidden');
+    renderQuiz();
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
+
+  document.getElementById('download-btn').addEventListener('click', ()=>{
+    window.print();
+  });
+}
+
+function checkIcon(){
+  return `<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="8" cy="8" r="8" fill="#3F6D6A"/><path d="M4.5 8.2L6.8 10.5L11.5 5.5" stroke="#F3EFE6" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+}
+
+function downloadIcon(){
+  return `<svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+}
+
+function getTicketNumber(){
+  if(ticketNumber === null){
+    ticketNumber = Math.floor(1000+Math.random()*8999);
+  }
+  return ticketNumber;
+}
+
+renderQuiz();
+</script>
+
+</body>
+</html>
