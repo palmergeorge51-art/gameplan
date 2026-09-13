@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The $1K/Day Game Plan</title>
+<title>The Daily Sales Gameplan</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
@@ -328,6 +328,26 @@
     font-family:'Space Mono',monospace; font-size:11.5px; line-height:1.6; color:var(--card-text-2);
   }
 
+  .math-card{
+    margin-top:26px; background:var(--ink-2); border:1px solid var(--line); border-radius:14px; padding:28px 26px;
+  }
+  .math-eyebrow{
+    font-family:'Space Mono',monospace; font-size:11px; letter-spacing:0.12em; text-transform:uppercase;
+    color:var(--gold); margin-bottom:10px;
+  }
+  .math-title{font-family:'Fraunces',serif; font-weight:700; font-size:22px; margin-bottom:10px; color:var(--paper);}
+  .math-detail{font-size:14px; line-height:1.6; color:var(--card-text); margin-bottom:18px;}
+  .math-table{width:100%; border-collapse:collapse;}
+  .math-table tr{border-bottom:1px solid var(--line);}
+  .math-table tr:last-child{border-bottom:none;}
+  .math-table td{padding:11px 4px; font-size:14px;}
+  .math-table td:first-child{font-family:'Fraunces',serif; font-weight:700; color:var(--gold); width:80px;}
+  .math-table td:last-child{text-align:right; color:var(--card-text); font-family:'Space Mono',monospace; font-size:13px;}
+  .math-note{
+    margin-top:16px; padding-top:14px; border-top:1px dashed var(--line);
+    font-family:'Space Mono',monospace; font-size:11.5px; line-height:1.6; color:var(--card-text-2);
+  }
+
   @media print{
     .theme-toggle, .ticker, header, #quiz-area, #loading-area, .upsell, .download-btn, .restart{display:none !important;}
     body{background:#fff !important;}
@@ -340,6 +360,12 @@
     .mix-label{color:#333;}
     .starter-list li{color:#333;}
     .starter-list li::before{border-color:#3F6D6A; color:#3F6D6A;}
+    .math-card{background:#fff; border:1px solid #ccc; color:#12172B;}
+    .math-title{color:#12172B;}
+    .math-detail, .math-note{color:#444;}
+    .math-table tr{border-bottom:1px solid #ddd;}
+    .math-table td:first-child{color:#c8932f;}
+    .math-table td:last-child{color:#444;}
   }
 
   .restart{
@@ -378,8 +404,8 @@
 <div class="wrap">
 
   <header id="header">
-    <h1>Build your <em>$1K/day</em><br>game plan</h1>
-    <p class="sub">Answer a few quick questions. Get a personalized route to your first $1,000 day with digital products, built around your actual situation, plus a downloadable copy to keep.</p>
+    <h1>Get your <em>daily sales</em><br>gameplan</h1>
+    <p class="sub">Get a personalized route to consistent daily sales with digital products, built around your actual situation, plus a downloadable copy to keep.</p>
   </header>
 
   <!-- QUIZ -->
@@ -391,7 +417,7 @@
       <div class="spinner"></div>
       <div style="font-family:'Fraunces',serif; font-weight:600; font-size:19px;">Building your game plan…</div>
       <div class="loading-line" id="loading-line">Reading your answers</div>
-</div>
+    </div>
   </div>
 
   <!-- RESULT -->
@@ -616,8 +642,8 @@ const STAGE_META = {
 };
 
 const STAGE_CONTRAST = {
-  A: "Most total beginners spend their first month researching platforms and comparing tools instead of picking one product and shipping it. That research feels like progress; it isn't.",
-  B: "Most people with an unlaunched idea rewrite or \"improve\" it for weeks before ever putting it in front of a buyer. The idea isn't the bottleneck; launching an imperfect version of it is.",
+  A: "Most total beginners spend their first month researching platforms and comparing tools instead of picking one product and shipping it. That research feels like progress, it isn't.",
+  B: "Most people with an unlaunched idea rewrite or \"improve\" it for weeks before ever putting it in front of a buyer. The idea isn't the bottleneck, launching an imperfect version of it is.",
   C: "Most people with inconsistent sales blame traffic and go chase more followers or more posts. The actual fix is almost always the offer itself, not the audience size.",
   D: "Most people who've made a few sales try to add new products instead of repeating what already worked. Scaling to daily comes from repetition, not expansion."
 };
@@ -630,7 +656,7 @@ const STAGE_MISTAKE = {
 };
 
 const TIME_META = {
-  A: "30 focused minutes a day is enough to launch; you just can't afford to waste any of it guessing.",
+  A: "30 focused minutes a day is enough to launch, you just can't afford to waste any of it guessing.",
   B: "1 hour a day is a real runway, more than enough to get your first product built if you stay focused on one task at a time.",
   C: "2 to 3 hours a day puts you ahead of most people who never start. Consistency at this pace matters more than speed.",
   D: "4+ hours a day means your bottleneck isn't time, it's direction. You need a system, not more hours."
@@ -638,16 +664,16 @@ const TIME_META = {
 
 const AUDIENCE_INSIGHT = {
   A: { tag:"Zero-Audience Path", text:"You'd be starting with no built-in audience, so your plan has to lean on a channel that puts you in front of strangers, not just people who already know you. That changes which platform and format you should pick first." },
-  B: { tag:"Small Audience Leverage", text:"A following under 1,000 is more than enough to get a first sale; most first $1,000 days come from a small, warm audience, not a huge one. The move is a direct offer to the people already watching, not more content." },
+  B: { tag:"Small Audience Leverage", text:"A following under 1,000 is more than enough to get a first sale, most first $1,000 days come from a small, warm audience, not a huge one. The move is a direct offer to the people already watching, not more content." },
   C: { tag:"Audience-Offer Mismatch", text:"You already have reach, so this isn't an audience problem, it's an offer problem. People are watching but not buying, which almost always means the offer doesn't match what they came to you for." },
   D: { tag:"Untapped Audience", text:"You're sitting on an asset most beginners don't have. The single fastest path to your first $1,000 day is a direct offer to your existing audience before you spend any energy finding new people." }
 };
 
 const PRICING_INSIGHT = {
-  A: { tag:"Pricing Guesswork", text:"Guessing a price is one of the most common reasons launches stall: price too low and it feels unserious, price too high with no anchor and it feels random. You need a pricing structure that's already been tested, not a guess." },
-  B: { tag:"Underpricing Risk", text:"Pricing under $10 out of fear usually backfires; it signals low value and still doesn't remove the fear of charging more later. A tested price anchor removes the guesswork so you're not leaving money on your first sales." },
+  A: { tag:"Pricing Guesswork", text:"Guessing a price is one of the most common reasons launches stall, price too low and it feels unserious, price too high with no anchor and it feels random. You need a pricing structure that's already been tested, not a guess." },
+  B: { tag:"Underpricing Risk", text:"Pricing under $10 out of fear usually backfires, it signals low value and still doesn't remove the fear of charging more later. A tested price anchor removes the guesswork so you're not leaving money on your first sales." },
   C: { tag:"Confidence Gap", text:"You're in a reasonable price range but not confident in it, which usually means the offer isn't positioned clearly enough to justify the number. Fixing the positioning fixes the confidence." },
-  D: { tag:"Ready to Anchor", text:"You're already thinking at the right price range; the only thing missing is actually launching it. Don't let pricing be the reason this stays unlaunched." }
+  D: { tag:"Ready to Anchor", text:"You're already thinking at the right price range, the only thing missing is actually launching it. Don't let pricing be the reason this stays unlaunched." }
 };
 
 const POSTING_CADENCE = {
@@ -660,7 +686,7 @@ const POSTING_CADENCE = {
 const POSTING_CHANNEL = {
   A: { angle:"Build in public, from zero", text:"With no existing audience, every post should be written for a stranger scrolling past, not a fan who already knows you. Lead with the specific problem your product solves, not your journey." },
   B: { angle:"Talk directly to your small following", text:"With a following under 1,000, your posts should speak directly to the people already there. A direct, personal offer to a small warm audience outperforms broad content aimed at strangers." },
-  C: { angle:"Shift content toward the offer", text:"You already post to real reach; the shift is content that leads to your product, not just engagement. Every third post should mention what you're selling and why." },
+  C: { angle:"Shift content toward the offer", text:"You already post to real reach, the shift is content that leads to your product, not just engagement. Every third post should mention what you're selling and why." },
   D: { angle:"Turn existing content into a launch", text:"You have real reach and haven't sold to it yet. Your next posts should announce the offer directly instead of hoping people find it in your bio." }
 };
 
@@ -756,7 +782,7 @@ function buildSteps(a){
   if(a.consistency === "A" || a.consistency === "B"){
     steps.push({
       title: "Remove the follow-through gap",
-      body: "Your pattern shows the setup isn't the problem; staying in motion after week one is. Pick one channel and one non-negotiable daily action, and track streaks instead of results for the first 14 days.",
+      body: "Your pattern shows the setup isn't the problem, staying in motion after week one is. Pick one channel and one non-negotiable daily action, and track streaks instead of results for the first 14 days.",
       tag: "Consistency Fix"
     });
   } else {
@@ -812,7 +838,7 @@ function showResult(){
         </div>
         <div class="verdict-tag">${firstName}'s Path, Stage ${stageMeta.num}</div>
         <div class="verdict-title">You're closer than<br>you <span class="num">think</span>, ${firstName}.</div>
-        <div class="verdict-desc">Here's your specific route to a $1,000 day, built from where you actually are right now, not a generic "start a business" checklist.</div>
+        <div class="verdict-desc">Here's your specific route to consistent daily sales, built from where you actually are right now, not a generic "start a business" checklist.</div>
 
         <div class="metrics-row">
           <div class="metric"><div class="v">${paceEstimate}</div><div class="l">Your Timeline Pace</div></div>
@@ -878,37 +904,19 @@ function showResult(){
       <div class="rhythm-note">This is a posting habit, not a sales guarantee. How many people buy still depends on your offer and your niche, this just keeps you consistent while the rest of the plan does its work.</div>
     </div>
 
-    <div class="rhythm-card">
-      <div class="rhythm-eyebrow">The Core Math</div>
-      <h3 class="rhythm-title">$1K/day = $30K/month</h3>
-      <p class="rhythm-detail">Work backward from price point:</p>
-
-      <div class="mix-list" style="margin-top:14px;">
-        <div class="mix-row">
-          <span class="mix-count">145</span>
-          <span class="mix-label">sales/day at a $7 product</span>
-        </div>
-        <div class="mix-row">
-          <span class="mix-count">37</span>
-          <span class="mix-label">sales/day at a $27 product</span>
-        </div>
-        <div class="mix-row">
-          <span class="mix-count">11</span>
-          <span class="mix-label">sales/day at a $97 product</span>
-        </div>
-      </div>
-
-      <p class="rhythm-detail" style="margin-top:16px;">Higher price points need far less volume, which is why most people who hit this consistently aren't selling $5–$7 items alone, they're using a low-price front end to fund a higher-price back end.</p>
-
-      <div class="rhythm-divider"></div>
-      <div class="rhythm-angle-label">The standard structure that works</div>
-
-      <ul class="starter-list">
-        <li><strong>Front-end offer ($5–20)</strong> — low-friction, solves one specific problem, gets people in the door. Its job isn't profit, it's list-building and trust.</li>
-        <li><strong>Order bump ($5–15)</strong> — shown at checkout, no extra traffic needed. Often the single highest-ROI addition; can lift average order value 20–40% for free.</li>
-        <li><strong>Upsell / core offer ($30–100)</strong> — the real profit engine, offered immediately after purchase while intent is highest. This usually does more revenue than the front-end product itself.</li>
-        <li><strong>Recurring or higher-ticket back end (optional)</strong> — membership, coaching, or a bundle for repeat buyers. Not required to hit $1K/day, but it's what makes it repeatable without constant new traffic.</li>
-      </ul>
+    <div class="math-card">
+      <div class="math-eyebrow">Your Income Math</div>
+      <h3 class="math-title">What $1,000/day actually takes</h3>
+      <p class="math-detail">Daily revenue is just sales × price. Here's how many sales you'd need at different price points to hit $1,000 in a day.</p>
+      <table class="math-table">
+        <tr><td>$17</td><td>59 sales/day</td></tr>
+        <tr><td>$27</td><td>38 sales/day</td></tr>
+        <tr><td>$47</td><td>22 sales/day</td></tr>
+        <tr><td>$97</td><td>11 sales/day</td></tr>
+        <tr><td>$197</td><td>6 sales/day</td></tr>
+        <tr><td>$297</td><td>4 sales/day</td></tr>
+      </table>
+      <div class="math-note">This is pure arithmetic, not a projection. Your actual price and product decide which row applies to you, and higher prices mean fewer sales needed for the same target.</div>
     </div>
 
     <button class="download-btn" id="download-btn">${downloadIcon()}Download my plan (PDF)</button>
@@ -916,7 +924,7 @@ function showResult(){
     <div class="upsell">
       <div class="upsell-eyebrow">Your Next Step</div>
       <h3>You know the plan. Want the <em>exact system</em> that runs it?</h3>
-      <p class="lead">This game plan tells you what to do. The <strong>$1K/Day System</strong> is the exact step-by-step toolkit I personally use to find validated product ideas, launch them fast, and turn them into daily sales, so you're not figuring out the how from scratch.</p>
+      <p class="lead">This game plan tells you what to do. <strong>The Daily Sales System</strong> is the exact step-by-step toolkit I personally use to find validated product ideas, launch them fast, and turn them into daily sales, so you're not figuring out the how from scratch.</p>
 
       <ul class="bundle-list">
         <li class="bundle-item">
@@ -952,7 +960,7 @@ function showResult(){
           <div class="price-note">One-time, lifetime access</div>
         </div>
       </div>
-      <a href="${CHECKOUT_URL}" class="cta-btn" target="_blank" rel="noopener">Get the $1K/Day System, $20 →</a>
+      <a href="${CHECKOUT_URL}" class="cta-btn" target="_blank" rel="noopener">Get The Daily Sales System, $20 →</a>
       <div class="cta-sub">Instant access, built for exactly where you are, ${firstName}</div>
     </div>
 
