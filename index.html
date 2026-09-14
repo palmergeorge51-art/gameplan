@@ -404,8 +404,8 @@
 <div class="wrap">
 
   <header id="header">
-    <h1>Get your <em>daily sales</em><br>gameplan</h1>
-    <p class="sub">Get a personalized route to consistent daily sales with digital products, built around your actual situation, plus a downloadable copy to keep.</p>
+    <h1>Build your <em>daily sales</em><br>gameplan</h1>
+    <p class="sub">Answer a few quick questions. Get a personalized route to consistent daily sales with digital products, built around your actual situation, plus a downloadable copy to keep.</p>
   </header>
 
   <!-- QUIZ -->
@@ -537,6 +537,7 @@ const header = document.getElementById('header');
 function renderQuiz(){
   const q = QUESTIONS[current];
   const pct = Math.round((current/QUESTIONS.length)*100);
+  let locked = false;
 
   let optsHtml = "";
   if(q.input){
@@ -573,12 +574,20 @@ function renderQuiz(){
       answers.name = inp.value.trim();
       btn.disabled = answers.name.length === 0;
     });
-    inp.addEventListener('keydown', (e)=>{ if(e.key==='Enter' && answers.name) advance(); });
-    btn.addEventListener('click', advance);
+    inp.addEventListener('keydown', (e)=>{
+      if(e.key==='Enter' && answers.name && !locked){ locked = true; advance(); }
+    });
+    btn.addEventListener('click', ()=>{
+      if(locked) return;
+      locked = true;
+      advance();
+    });
     setTimeout(()=>inp.focus(), 50);
   } else {
     document.querySelectorAll('.opt').forEach(btn=>{
       btn.addEventListener('click', ()=>{
+        if(locked) return;
+        locked = true;
         answers[q.key] = btn.dataset.k;
         setTimeout(advance, 180);
       });
@@ -586,7 +595,7 @@ function renderQuiz(){
   }
 
   document.getElementById('back-btn').addEventListener('click', ()=>{
-    if(current>0){ current--; renderQuiz(); }
+    if(current>0 && !locked){ current--; renderQuiz(); }
   });
 }
 
@@ -798,7 +807,8 @@ function buildSteps(a){
 
 function showResult(){
   loadingArea.classList.add('hidden');
-  const a = answers;
+  const DEFAULT_ANSWERS = { stage:'B', time:'B', product:'A', blocker:'A', audience:'A', pricing:'A', consistency:'C', name:'' };
+  const a = Object.assign({}, DEFAULT_ANSWERS, answers);
   const stageMeta = STAGE_META[a.stage] || STAGE_META.B;
   const steps = buildSteps(a);
   const firstName = a.name || "Founder";
