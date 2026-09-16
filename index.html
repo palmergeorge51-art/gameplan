@@ -348,6 +348,38 @@
     font-family:'Space Mono',monospace; font-size:11.5px; line-height:1.6; color:var(--card-text-2);
   }
 
+  .tips-card{
+    margin-top:26px; background:var(--ink-2); border:1px solid var(--line); border-radius:14px; padding:28px 26px;
+  }
+  .tips-eyebrow{
+    font-family:'Space Mono',monospace; font-size:11px; letter-spacing:0.12em; text-transform:uppercase;
+    color:var(--gold); margin-bottom:10px;
+  }
+  .tips-title{font-family:'Fraunces',serif; font-weight:700; font-size:22px; margin-bottom:16px; color:var(--paper);}
+  .tips-list{list-style:none; padding:0; margin:0; counter-reset:tipnum;}
+  .tips-list li{
+    counter-increment:tipnum; position:relative; padding-left:32px; font-size:14px; line-height:1.55;
+    color:var(--card-text); margin-bottom:11px;
+  }
+  .tips-list li:last-child{margin-bottom:0;}
+  .tips-list li::before{
+    content:counter(tipnum); position:absolute; left:0; top:0; width:22px; height:22px;
+    background:var(--gold); color:var(--ink); border-radius:6px; font-family:'Space Mono',monospace;
+    font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center;
+  }
+  .tips-closer{
+    margin-top:22px; padding-top:18px; border-top:1px dashed var(--line);
+  }
+  .tips-closer p{
+    font-size:14px; line-height:1.5; color:var(--card-text); margin-bottom:6px;
+  }
+  .tips-closer p:last-child{margin-bottom:0; color:var(--gold); font-weight:700;}
+
+  .upsell-disclaimer{
+    margin-top:-6px; margin-bottom:20px; font-family:'Space Mono',monospace; font-size:11.5px;
+    line-height:1.6; color:var(--card-text-2); position:relative;
+  }
+
   @media print{
     .theme-toggle, .ticker, header, #quiz-area, #loading-area, .upsell, .download-btn, .restart{display:none !important;}
     body{background:#fff !important;}
@@ -366,6 +398,11 @@
     .math-table tr{border-bottom:1px solid #ddd;}
     .math-table td:first-child{color:#c8932f;}
     .math-table td:last-child{color:#444;}
+    .tips-card{background:#fff; border:1px solid #ccc; color:#12172B;}
+    .tips-title{color:#12172B;}
+    .tips-list li{color:#333;}
+    .tips-closer p{color:#333;}
+    .tips-closer p:last-child{color:#c8932f;}
   }
 
   .restart{
@@ -929,12 +966,37 @@ function showResult(){
       <div class="math-note">This is pure arithmetic, not a projection. Your actual price and product decide which row applies to you, and higher prices mean fewer sales needed for the same target.</div>
     </div>
 
+    <div class="tips-card">
+      <div class="tips-eyebrow">One More Thing</div>
+      <h3 class="tips-title">How to make daily sales</h3>
+      <ol class="tips-list">
+        <li>Pick ONE painful problem.</li>
+        <li>Create ONE simple solution.</li>
+        <li>Put it in front of the right people every day.</li>
+        <li>Talk about the problem more than the product.</li>
+        <li>Show proof that the solution works.</li>
+        <li>Make your offer easy to understand.</li>
+        <li>Give people a clear reason to buy.</li>
+        <li>Tell them exactly where to buy.</li>
+        <li>Follow up with people who showed interest.</li>
+        <li>Repeat daily.</li>
+      </ol>
+      <div class="tips-closer">
+        <p>You do not need viral posts.</p>
+        <p>You need a system that consistently turns attention into buyers.</p>
+        <p>Likes are nice.</p>
+        <p>Sales pay the bills.</p>
+      </div>
+    </div>
+
     <button class="download-btn" id="download-btn">${downloadIcon()}Download my plan (PDF)</button>
 
     <div class="upsell">
       <div class="upsell-eyebrow">Your Next Step</div>
       <h3>You know the plan. Want the <em>exact system</em> that runs it?</h3>
       <p class="lead">This game plan tells you what to do. <strong>The Daily Sales System</strong> is the exact step-by-step toolkit I personally use to find validated product ideas, launch them fast, and turn them into daily sales, so you're not figuring out the how from scratch.</p>
+
+      <div class="upsell-disclaimer">This gameplan is the entry point to that same model. It won't guarantee your result, but it starts the same way mine did.</div>
 
       <ul class="bundle-list">
         <li class="bundle-item">
@@ -970,11 +1032,11 @@ function showResult(){
           <div class="price-note">One-time, lifetime access</div>
         </div>
       </div>
-      <a href="${CHECKOUT_URL}" class="cta-btn" target="_blank" rel="noopener">Get The Daily Sales System, $20 →</a>
-      <div class="cta-sub">Instant access, built for exactly where you are, ${firstName}</div>
+      <a href="${CHECKOUT_URL}" class="cta-btn" target="_blank" rel="noopener">Get The Daily Sales System, $27 →</a>
+      <div class="cta-sub">Instant access, built for exactly for you, ${firstName}</div>
     </div>
 
-    <button class="restart" id="restart-btn">↻ Retake the game plan quiz</button>
+    <button class="restart" id="restart-btn">↻ Retake the gameplan</button>
   `;
   resultArea.classList.remove('hidden');
   window.scrollTo({top:0, behavior:'smooth'});
