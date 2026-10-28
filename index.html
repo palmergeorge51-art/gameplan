@@ -232,6 +232,54 @@
   .mistake-callout .gt{font-family:'Space Mono',monospace; font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:#C4472F; font-weight:700; margin-bottom:5px;}
   .mistake-callout p{font-size:13.5px; line-height:1.6; color:rgba(18,23,43,0.78);}
 
+  /* ---------- upsell ---------- */
+  .upsell{
+    margin-top:26px; background:linear-gradient(160deg, var(--ink-2), var(--ink));
+    border:1px solid rgba(232,169,59,0.35); border-radius:16px; padding:32px 28px; position:relative; overflow:hidden;
+  }
+  .upsell::before{
+    content:""; position:absolute; top:-60px; right:-60px; width:200px; height:200px;
+    background:radial-gradient(circle, rgba(232,169,59,0.25), transparent 70%);
+  }
+  .upsell-eyebrow{
+    font-family:'Space Mono',monospace; font-size:11px; letter-spacing:0.12em; text-transform:uppercase;
+    color:var(--gold); margin-bottom:14px; position:relative;
+  }
+  .upsell h3{font-family:'Fraunces',serif; font-weight:600; font-size:26px; line-height:1.18; margin-bottom:14px; position:relative;}
+  .upsell h3 em{font-style:italic; color:var(--gold);}
+  .upsell p.lead{font-size:14.5px; line-height:1.65; color:var(--card-text); margin-bottom:22px; position:relative;}
+
+  .bundle-list{list-style:none; position:relative; margin-bottom:22px; border:1px solid var(--line); border-radius:12px; overflow:hidden;}
+  .bundle-item{
+    display:flex; justify-content:space-between; align-items:center; gap:14px;
+    padding:14px 16px; border-bottom:1px solid var(--line); background:rgba(128,128,128,0.03);
+  }
+  .bundle-item:last-child{border-bottom:none;}
+  .bundle-item .bi-left{display:flex; align-items:center; gap:12px;}
+  .bundle-item .bi-name{font-family:'Inter',sans-serif; font-weight:600; font-size:13.5px; color:var(--paper);}
+  .bundle-item .bi-price{font-family:'Space Mono',monospace; font-size:12.5px; color:var(--card-text-2); text-decoration:line-through; white-space:nowrap;}
+  .bundle-total-row{
+    display:flex; justify-content:space-between; align-items:center; padding:14px 16px;
+    background:rgba(232,169,59,0.1);
+  }
+  .bundle-total-row .bt-label{font-family:'Space Mono',monospace; font-size:11px; letter-spacing:0.06em; text-transform:uppercase; color:var(--gold);}
+  .bundle-total-row .bt-value{font-family:'Space Mono',monospace; font-size:13px; color:var(--card-text-2); text-decoration:line-through;}
+
+  .price-row{
+    display:flex; align-items:center; gap:12px; margin-bottom:18px; position:relative;
+  }
+  .price-old{font-family:'Space Mono',monospace; font-size:16px; color:var(--card-text-2); text-decoration:line-through;}
+  .price-new{font-family:'Fraunces',serif; font-weight:700; font-size:32px; color:var(--gold);}
+  .price-note{font-family:'Space Mono',monospace; font-size:10.5px; color:var(--card-text-2); text-transform:uppercase; letter-spacing:0.05em;}
+
+  .cta-btn{
+    display:block; width:100%; text-align:center; text-decoration:none; background:var(--gold); color:var(--ink);
+    font-family:'Inter',sans-serif; font-weight:800; font-size:15.5px; padding:18px; border-radius:11px;
+    position:relative; transition:.15s ease; border:none; cursor:pointer;
+  }
+  .cta-btn:hover{filter:brightness(1.08); transform:translateY(-2px); box-shadow:0 12px 24px -8px rgba(232,169,59,0.5);}
+  .cta-sub{text-align:center; font-family:'Space Mono',monospace; font-size:10.5px; color:var(--card-text-2); margin-top:10px; letter-spacing:0.03em; position:relative;}
+
   .download-btn{
     width:100%; margin-top:16px; display:flex; align-items:center; justify-content:center; gap:9px;
     background:var(--ink-2); border:1px solid var(--line); color:var(--paper);
@@ -327,8 +375,13 @@
   }
   .tips-closer p:last-child{margin-bottom:0; color:var(--gold); font-weight:700;}
 
+  .upsell-disclaimer{
+    margin-top:-6px; margin-bottom:20px; font-family:'Space Mono',monospace; font-size:11.5px;
+    line-height:1.6; color:var(--card-text-2); position:relative;
+  }
+
   @media print{
-    .theme-toggle, .ticker, header, #quiz-area, #loading-area, .download-btn, .restart{display:none !important;}
+    .theme-toggle, .ticker, header, #quiz-area, #loading-area, .upsell, .download-btn, .restart{display:none !important;}
     body{background:#fff !important;}
     .wrap{max-width:100%; padding:0;}
     .ticket{box-shadow:none; border:1px solid #ccc;}
@@ -368,6 +421,7 @@
     .card{padding:24px 18px;} .ticket-top{padding:24px 20px 20px;} .ticket-bottom{padding:22px 20px 24px;}
     .metrics-row{flex-wrap:wrap;} .metric{min-width:calc(50% - 5px);}
     .theme-toggle{top:auto; bottom:16px; right:16px;}
+    .bundle-item{flex-wrap:wrap;}
   }
 </style>
 </head>
@@ -428,6 +482,8 @@ btnLight.addEventListener('click', ()=>setTheme('light'));
 })();
 
 /* ============ CONFIG ============ */
+const CHECKOUT_URL = "https://gorj.lemonsqueezy.com/checkout/buy/9018d0cb-27e6-4190-804f-6eaf6684bf0d?logo=0";
+
 const QUESTIONS = [
   {
     key: "stage",
@@ -935,6 +991,51 @@ function showResult(){
 
     <button class="download-btn" id="download-btn">${downloadIcon()}Download my plan (PDF)</button>
 
+    <div class="upsell">
+      <div class="upsell-eyebrow">Your Next Step</div>
+      <h3>You know the plan. Want the <em>exact system</em> that runs it?</h3>
+      <p class="lead">This game plan tells you what to do. <strong>The Daily Sales System</strong> is the exact step-by-step toolkit I personally use to find validated product ideas, launch them fast, and turn them into daily sales, so you're not figuring out the how from scratch.</p>
+
+      <div class="upsell-disclaimer">This gameplan is the entry point to that same model. It won't guarantee your result, but it starts the same way mine did.</div>
+
+      <ul class="bundle-list">
+        <li class="bundle-item">
+          <div class="bi-left">${checkIcon()}<span class="bi-name">Digital Product Launch Blueprint</span></div>
+          <span class="bi-price">$27</span>
+        </li>
+        <li class="bundle-item">
+          <div class="bi-left">${checkIcon()}<span class="bi-name">Done-For-You Launch System</span></div>
+          <span class="bi-price">$37</span>
+        </li>
+        <li class="bundle-item">
+          <div class="bi-left">${checkIcon()}<span class="bi-name">Idea Validator + Income Estimator Tool</span></div>
+          <span class="bi-price">$27</span>
+        </li>
+        <li class="bundle-item">
+          <div class="bi-left">${checkIcon()}<span class="bi-name">500 Digital Product Ideas</span></div>
+          <span class="bi-price">$17</span>
+        </li>
+        <li class="bundle-item">
+          <div class="bi-left">${checkIcon()}<span class="bi-name">First 100 Buyers Playbook</span></div>
+          <span class="bi-price">$27</span>
+        </li>
+        <li class="bundle-total-row">
+          <span class="bt-label">Total value</span>
+          <span class="bt-value">$135</span>
+        </li>
+      </ul>
+
+      <div class="price-row">
+        <span class="price-new">$27</span>
+        <div>
+          <div class="price-old">$47</div>
+          <div class="price-note">One-time, lifetime access</div>
+        </div>
+      </div>
+      <a href="${CHECKOUT_URL}" class="cta-btn" target="_blank" rel="noopener">Get The Daily Sales System, $27 →</a>
+      <div class="cta-sub">Instant access, built for exactly for you, ${firstName}</div>
+    </div>
+
     <button class="restart" id="restart-btn">↻ Retake the gameplan</button>
   `;
   resultArea.classList.remove('hidden');
@@ -952,6 +1053,10 @@ function showResult(){
   document.getElementById('download-btn').addEventListener('click', ()=>{
     window.print();
   });
+}
+
+function checkIcon(){
+  return `<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="8" cy="8" r="8" fill="#3F6D6A"/><path d="M4.5 8.2L6.8 10.5L11.5 5.5" stroke="#F3EFE6" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 }
 
 function downloadIcon(){
